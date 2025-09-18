@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minecraft Vita Edition - Bedrocked</title>
+    <!-- Подключение Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Подключение пиксельного шрифта -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <style>
+        @font-face {
+            font-family: "ten";
+            src: url("content/ten.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: "mcia";
+            src: url("content/minecraft.ttf") format("truetype");
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            font-family: 'ten', sans-serif;
+            background-color: #ffffff;
+            image-rendering: pixelated;
+        }
+
+        .whatIS {
+            font-family: 'mcia', sans-serif;
+            background-color: #ffffff;
+        }
+
+        .pixel-text-shadow {
+            text-shadow: 4px 4px 0 #0000007e; /* text shadow */
+        }
+        
+        .header-text-shadow {
+            text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
+        }
+        
+        .video-container {
+            background-color: #e5e7eb;
+            border: 4px solid #1f2937;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .play-button {
+            width: 80px;
+            height: 80px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2334D399'%3E%3Cpath d='M4 2.525v10.95l8.5-5.475L4 2.525Z'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            cursor: pointer;
+            z-index: 10;
+            transition: transform 0.2s;
+        }
+
+        .play-button:hover {
+            transform: translate(-50%, -50%) scale(1.1);
+        }
+
+        .buttonGET {
+            font-size: 13px;
+            background-color: #008542;
+            color: #fff;
+            text-shadow: 0 2px 0 rgb(0 0 0 / 25%);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 0;
+            z-index: 1;
+            user-select: none;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            white-space: unset;
+            padding: 0.8rem 1.5rem;
+            text-decoration: none;
+            font-weight: 900;
+            transition: all 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
+            font-family: 'mcia', sans-serif;
+        }
+
+        .buttonGET:before {
+            position: absolute;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            content: "";
+            transition: 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
+            z-index: -1;
+            background-color: #008542 !important;
+            box-shadow: 
+                0 -4px rgb(21 108 0 / 50%) inset,
+                0 4px rgb(100 253 31 / 99%) inset,
+                -4px 0 rgb(100 253 31 / 50%) inset,
+                4px 0 rgb(21 108 0 / 50%) inset;
+        }
+
+        .buttonGET:after {
+            position: absolute;
+            pointer-events: none;
+            top: 0;
+            left: 0;
+            display: block;
+            width: 100%;
+            height: 100%;
+            content: "";
+            box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
+            transition: 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
+        }
+
+        .buttonGET:hover:before {
+            box-shadow: 
+                0 -4px rgb(0 0 0 / 50%) inset,
+                0 4px rgb(255 255 255 / 20%) inset,
+                -4px 0 rgb(255 255 255 / 20%) inset,
+                4px 0 rgb(0 0 0 / 50%) inset;
+        }
+
+        .buttonGET:hover:after {
+            box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
+        }
+
+        .buttonGET:active {
+            transform: translateY(4px);
+        }
+
+        .buttonGET:active:after {
+            box-shadow: 0 0px 0 0 rgb(0 0 0 / 15%);
+        }
+
+        @media (max-width: 768px) {
+            .buttonGET {
+                font-size: 14px;
+                font-family: 'mcia', sans-serif;
+                padding: 0.6rem 1rem;
+            }
+            
+            .header-logo {
+                width: 120px !important;
+            }
+        }
+
+        .mceasy {
+            font-family: 'mcia', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-white text-gray-900">
+
+    <!-- Header -->
+    <header class="bg-green-600 text-white p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-lg md:text-xl header-text-shadow">
+                <img src="content/MCPSVBLogo.png" 
+                    class="header-logo w-32 md:w-40 lg:w-48" 
+                    alt="Logo">
+            </div>
+
+            <nav class="hidden md:flex items-center space-x-6 text-sm">
+                <a href="#" class="mceasy hover:text-gray-300 transition-colors">BLOG</a>
+            </nav>
+            <a href="#download"><button class="buttonGET">get MCPSVB</button></a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- Hero Section -->
+        <section class="bg-green-500 py-16 px-4" style="background: linear-gradient(to bottom, #21C818, #578255)">
+            <div class="container mx-auto flex flex-col md:flex-row items-center justify-center">
+                <div class="text-white text-center md:text-left">
+                    <h1 class="text-6xl md:text-8xl lg:text-9xl font-bold leading-none pixel-text-shadow">
+                        LEGACY <span class="block">IN NEW</span> WAY
+                    </h1>
+                </div>
+                <div class="md:-ml-11 lg:-ml-39 mt-4 md:mt-0">
+                    <img src="content/vita.png" alt="PlayStation Vita" class="mx-auto transform -rotate-12 w-full max-w-xl">
+                </div>
+            </div>
+        </section>
+
+        <!-- Make Legacy Great Again Section -->
+        <section class="text-center py-20 px-4">
+            <h2 class="text-5xl md:text-7xl font-bold text-gray-800">
+                MAKE<br>LEGACY<br>GREAT AGAIN!
+            </h2>
+        </section>
+
+        <!-- Trailer Section -->
+        <section class="text-center py-12 px-4 bg-gray-50">
+             <div class="w-full max-w-4xl mx-auto h-96 flex items-center justify-center video-container cursor-pointer" id="video-container">
+                <div class="play-button" id="play-button"></div>
+            </div>
+            <h3 class="text-3xl md:text-4xl font-bold mt-8 text-gray-800">
+                WATCH THE TRAILER
+            </h3>
+        </section>
+
+        <!-- What is Bedrocked Section -->
+        <section class="bg-gray-800 text-white">
+            <!-- Верхняя пиксельная граница -->
+            <div class="w-full overflow-hidden leading-none">
+                <svg viewBox="0 0 100 10" preserveAspectRatio="none" class="w-full h-auto block" style="height: 40px;">
+                    <path d="M0 10 H 5 V 8 H 10 V 10 H 15 V 7 H 20 V 10 H 22 V 5 H 28 V 10 H 35 V 8 H 40 V 6 H 45 V 10 H 55 V 8 H 60 V 10 H 65 V 5 H 70 V 10 H 78 V 7 H 85 V 10 H 90 V 8 H 95 V 10 H 100 V 0 H 0 Z" fill="#1f2937"></path>
+                </svg>
+            </div>
+            <div class="py-20 px-4">
+                <div class="container mx-auto text-center">
+                    <h2 class="text-5xl md:text-7xl font-bold mb-8">
+                        WHAT IS<br>BEDROCKED<span class="text-green-400">?</span>
+                    </h2>
+                    <p class="whatIS max-w-3xl mx-auto text-base md:text-lg leading-relaxed tracking-wider bg-transparent">
+                        BEDROCKED - IS A "MOD" FOR THE PLAYSTATION VITA EDITION OF MINECRAFT THAT IS IN EARLY DEVELOPMENT. ITS GOAL IS TO MAKE THE MINECRAFT PSVITA EDITION EXPERIENCE MORE ENJOYABLE BY CHANGING THE INTERFACES, TEXTURES, AND SOUNDS TO THOSE USED IN THE MINECRAFT BEDROCK EDITION FOR WINDOWS.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Download Section -->
+        <section id="download" class="py-20 px-4 bg-gray-100 text-center">
+            <div class="container mx-auto">
+                <h2 class="text-4xl md:text-6xl font-bold mb-8 text-gray-800">DOWNLOAD NOW</h2>
+                <p class="max-w-2xl mx-auto mb-10 text-lg">
+                    Get the latest version of Minecraft Vita Edition Bedrocked mod for your PlayStation Vita.
+                </p>
+                <a href="#" class="buttonGET inline-block mx-auto">DOWNLOAD</a>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white text-center py-10 px-4 text-xs">
+        <div class="container mx-auto">
+            <div class="text-lg md:text-xl mb-4">
+                MINECRAFT <span class="text-yellow-300">VITA EDITION</span><br>BEDROCKED
+            </div>
+            <p class="mb-4 max-w-xl mx-auto">
+                MINECRAFT: PLAYSTATION VITA EDITION BEDROCKED (OR MCEBEV) IS A FAN-MADE MODIFICATION AND DOES NOT CLAIM ANY RIGHTS TO ASSETS INVOLVED. © 4J STUDIOS ORIGINAL WORKS.
+            </p>
+            <p class="mb-6 max-w-xl mx-auto">
+                "VITA" AND "PLAYSTATION" ARE REGISTERED TRADEMARKS OF SONY INTERACTIVE ENTERTAINMENT. "MINECRAFT" IS A REGISTERED TRADEMARK OF MICROSOFT CORPORATION.
+            </p>
+            <p class="text-green-400">YARGINRODEV©</p>
+        </div>
+    </footer>
+
+    <script>
+        // Обработчик для кнопки воспроизведения видео
+        document.getElementById('play-button').addEventListener('click', function() {
+            // Здесь можно добавить код для открытия видео
+            // Например, открыть модальное окно с YouTube-видео
+            alert('Здесь будет открыто видео с трейлером');
+        });
+
+        // Альтернативно, можно добавить iframe с видео при клике
+        document.getElementById('video-container').addEventListener('click', function() {
+            // Замените URL на актуальную ссылку на видео
+            this.innerHTML = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
+        });
+    </script>
+
+</body>
+</html>
