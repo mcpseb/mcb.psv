@@ -1,11 +1,14 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="ru" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Minecraft Vita Edition - Bedrocked</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
+        /* * NOTE: These font files ('ten.ttf', 'minecraft.ttf') must be in a 'content' 
+         * directory relative to this HTML file to load correctly.
+         */
         @font-face {
             font-family: "ten";
             src: url("content/ten.ttf") format("truetype");
@@ -22,70 +25,85 @@
 
         body {
             font-family: 'ten', sans-serif;
-            background-color: #ffffff;
-            image-rendering: none;
+            background-color: #f3f4f6; /* Off-white base for better contrast */
+            /* Subtle dot pattern for a textured feel */
+            background-image: url("data:image/svg+xml,%3Csvg width='6' height='6' viewBox='0 0 6 6' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%239ca3af' fill-opacity='0.4' fill-rule='evenodd'%3E%3Cpath d='M5 0h1L0 6V5zM6 5v1H5z'/%3E%3C/g%3E%3C/svg%3E");
+            image-rendering: pixelated; /* Ensures pixel art scales correctly */
             cursor: none; 
         }
+        
+        /* Hide scrollbar for a cleaner look */
+        body::-webkit-scrollbar {
+            display: none;
+        }
 
+        /* Custom Cursor Styling */
         .custom-cursor {
             position: fixed;
-            width: 16px;
-            height: 16px;
+            width: 20px; /* Slightly larger for better visibility */
+            height: 20px;
+            /* NOTE: cursor.png, link.png, text.png need to be in the 'content' folder */
             background-image: url('content/cursor.png');
             background-size: contain;
             background-repeat: no-repeat;
             pointer-events: none;
             z-index: 9999;
             transform: translate(-50%, -50%);
-            transition: transform 0.1s ease;
+            transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), width 0.2s, height 0.2s;
         }
 
         .custom-cursor.click {
             transform: translate(-50%, -50%) scale(0.8);
         }
 
-        .whatIS {
+        /* Font styles */
+        .whatIS, .mceasy, .buttonGET {
             font-family: 'mcia', sans-serif;
-            background-color: #ffffff;
         }
-
+        
+        /* Text shadow for pixelated fonts for readability */
         .pixel-text-shadow {
-            text-shadow: 4px 4px 0 #0000007e; /* text shadow */
+            text-shadow: 4px 4px 0 #0000007e;
         }
         
         .header-text-shadow {
             text-shadow: 2px 2px 0px rgba(0,0,0,0.5);
         }
         
+        /* Video Container Improvements */
         .video-container {
-            background-color: #e5e7eb;
-            border: 4px solid #1f2937;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            border: 4px solid #374151;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2), 0 4px 6px -2px rgba(0, 0, 0, 0.1);
             position: relative;
+            background-color: #000;
         }
         
         .play-button {
             width: 80px;
             height: 80px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%2334D399'%3E%3Cpath d='M4 2.525v10.95l8.5-5.475L4 2.525Z'/%3E%3C/svg%3E");
-            background-size: contain;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M7 4V20L20 12L7 4Z'/%3E%3C/svg%3E");
+            background-color: rgba(0, 133, 66, 0.8);
+            border: 2px solid white;
+            border-radius: 50%;
+            background-size: 50%;
             background-repeat: no-repeat;
             background-position: center;
             position: absolute;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            cursor: pointer;
             z-index: 10;
-            transition: transform 0.2s;
+            transition: transform 0.2s ease-in-out, background-color 0.2s;
         }
 
         .play-button:hover {
             transform: translate(-50%, -50%) scale(1.1);
+            background-color: rgba(0, 133, 66, 1);
         }
 
+        /* Minecraft-style Button */
         .buttonGET {
-            font-size: 13px;
+            font-size: 14px;
             background-color: #008542;
             color: #fff;
             text-shadow: 0 2px 0 rgb(0 0 0 / 25%);
@@ -96,15 +114,12 @@
             border: 0;
             z-index: 1;
             user-select: none;
-            cursor: none;
             text-transform: uppercase;
             letter-spacing: 1px;
-            white-space: unset;
             padding: 0.8rem 1.5rem;
             text-decoration: none;
             font-weight: 900;
             transition: all 0.7s cubic-bezier(0, 0.8, 0.26, 0.99);
-            font-family: 'mcia', sans-serif;
         }
 
         .buttonGET:before {
@@ -147,10 +162,6 @@
                 4px 0 rgb(0 0 0 / 50%) inset;
         }
 
-        .buttonGET:hover:after {
-            box-shadow: 0 4px 0 0 rgb(0 0 0 / 15%);
-        }
-
         .buttonGET:active {
             transform: translateY(4px);
         }
@@ -158,32 +169,20 @@
         .buttonGET:active:after {
             box-shadow: 0 0px 0 0 rgb(0 0 0 / 15%);
         }
-
-        @media (max-width: 768px) {
-            .buttonGET {
-                font-size: 14px;
-                font-family: 'mcia', sans-serif;
-                padding: 0.6rem 1rem;
-            }
-            
-            .header-logo {
-                width: 120px !important;
-            }
-            
-            /* На мобильных отключаем кастомный курсор */
-            body {
-                cursor: default;
-            }
-            .custom-cursor {
-                display: none;
-            }
-        }
-
-        .mceasy {
-            font-family: 'mcia', sans-serif;
-        }
         
-        /* Стили для анимации Vita */
+        /* Make Legacy Great Again Section Background */
+        .dirt-bg {
+            background-color: #5c3b28;
+            background-image:
+                linear-gradient(rgba(255,255,255,.07) 2px, transparent 2px),
+                linear-gradient(90deg, rgba(255,255,255,.07) 2px, transparent 2px),
+                linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
+            background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+            background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+        }
+
+        /* Vita Animation Container */
         .vita-container {
             perspective: 1000px;
             transform-style: preserve-3d;
@@ -195,68 +194,67 @@
             transform-origin: center;
         }
 
-        /* Стили для ссылок с курсором */
-        a, button, .play-button {
-            cursor: none;
+        /* Disable custom cursor on mobile devices for better usability */
+        @media (max-width: 768px) {
+            body { cursor: default; }
+            .custom-cursor { display: none; }
         }
     </style>
 </head>
 <body class="bg-white text-gray-900">
-    <!-- Кастомный курсор -->
+    <!-- Custom cursor element -->
     <div class="custom-cursor" id="custom-cursor"></div>
 
-    <!-- Header -->
-    <header class="bg-green-600 text-white p-4">
+    <!-- Sticky Header -->
+    <header class="bg-green-600 text-white p-4 sticky top-0 z-50 shadow-lg">
         <div class="container mx-auto flex justify-between items-center">
-            <div class="text-lg md:text-xl header-text-shadow">
+            <a href="#" class="text-lg md:text-xl header-text-shadow">
                 <img src="content/MCPSVBLogo.png" 
-                    class="header-logo w-32 md:w-40 lg:w-48" 
-                    alt="Logo">
-            </div>
-
+                    class="header-logo w-32 md:w-40" 
+                    alt="Minecraft PS Vita Bedrocked Logo">
+            </a>
             <nav class="hidden md:flex items-center space-x-6 text-sm">
-                <a href="https://t.me/mcpsv" class="mceasy hover:text-gray-300 transition-colors">BLOG</a>
+                <a href="https://t.me/mcpsv" target="_blank" rel="noopener noreferrer" class="mceasy hover:text-green-200 transition-colors">BLOG</a>
             </nav>
             <a href="#download"><button class="buttonGET">get MCPSVB</button></a>
         </div>
     </header>
 
-    <!-- Main Content -->
     <main>
         <!-- Hero Section -->
-        <section class="bg-green-500 py-16 px-4" style="background: linear-gradient(to bottom, #21C818, #578255)">
-            <div class="container mx-auto flex flex-col md:flex-row items-center justify-center">
+        <section class="bg-green-500 py-16 px-4 overflow-hidden" style="background: linear-gradient(to bottom, #21C818, #578255)">
+            <div class="container mx-auto grid md:grid-cols-2 items-center gap-8">
                 <div class="text-white text-center md:text-left">
-                    <h1 class="text-6xl md:text-8xl lg:text-9xl font-bold leading-none pixel-text-shadow">
+                    <h1 class="text-6xl md:text-7xl lg:text-9xl font-bold leading-none pixel-text-shadow">
                         LEGACY <span class="block">IN NEW</span> WAY
                     </h1>
                 </div>
-                <div class="md:-ml-11 lg:-ml-39 mt-4 md:mt-0 vita-container" id="vita-container">
-                    <img src="content/vita.png" alt="PlayStation Vita" class="vita-image mx-auto transform -rotate-12 w-full max-w-xl" id="vita-image">
+                <div class="vita-container" id="vita-container">
+                    <img src="content/vita.png" alt="PlayStation Vita" class="vita-image mx-auto w-full max-w-lg" id="vita-image">
                 </div>
             </div>
         </section>
 
         <!-- Make Legacy Great Again Section -->
-        <section class="text-center py-20 px-4">
-            <h2 class="text-5xl md:text-7xl font-bold text-gray-800">
+        <section class="text-center py-20 px-4 dirt-bg">
+            <h2 class="text-5xl md:text-7xl font-bold text-white pixel-text-shadow">
                 MAKE<br>LEGACY<br>GREAT AGAIN!
             </h2>
         </section>
 
         <!-- Trailer Section -->
-        <section class="text-center py-12 px-4 bg-gray-50">
-             <div class="w-full max-w-4xl mx-auto h-96 flex items-center justify-center video-container cursor-pointer" id="video-container">
-                <div class="play-button" id="play-button"></div>
+        <section class="text-center py-16 px-4 bg-gray-200">
+             <div class="w-full max-w-4xl mx-auto aspect-video flex items-center justify-center video-container" id="video-container">
+                <div class="play-button" id="play-button" aria-label="Play Trailer"></div>
             </div>
-            <h3 class="text-3xl md:text-4xl font-bold mt-8 text-gray-800">
+            <h3 class="text-3xl md:text-4xl font-bold mt-8 text-gray-800 mceasy">
                 WATCH THE TRAILER
             </h3>
         </section>
 
         <!-- What is Bedrocked Section -->
         <section class="bg-gray-800 text-white">
-            <!-- Верхняя пиксельная граница -->
+            <!-- Top pixelated border -->
             <div class="w-full overflow-hidden leading-none">
                 <svg viewBox="0 0 100 10" preserveAspectRatio="none" class="w-full h-auto block" style="height: 40px;">
                     <path d="M0 10 H 5 V 8 H 10 V 10 H 15 V 7 H 20 V 10 H 22 V 5 H 28 V 10 H 35 V 8 H 40 V 6 H 45 V 10 H 55 V 8 H 60 V 10 H 65 V 5 H 70 V 10 H 78 V 7 H 85 V 10 H 90 V 8 H 95 V 10 H 100 V 0 H 0 Z" fill="#1f2937"></path>
@@ -267,140 +265,142 @@
                     <h2 class="text-5xl md:text-7xl font-bold mb-8">
                         WHAT IS<br>BEDROCKED<span class="text-green-400">?</span>
                     </h2>
-                    <p class="whatIS max-w-3xl mx-auto text-base md:text-lg leading-relaxed tracking-wider bg-transparent">
+                    <p class="whatIS max-w-3xl mx-auto text-base md:text-lg leading-relaxed tracking-wider">
                         BEDROCKED - IS A "MOD" FOR THE PLAYSTATION VITA EDITION OF MINECRAFT THAT IS IN EARLY DEVELOPMENT. ITS GOAL IS TO MAKE THE MINECRAFT PSVITA EDITION EXPERIENCE MORE ENJOYABLE BY CHANGING THE INTERFACES, TEXTURES, AND SOUNDS TO THOSE USED IN THE MINECRAFT BEDROCK EDITION FOR WINDOWS.
                     </p>
                 </div>
+            </div>
+             <!-- Bottom pixelated border -->
+            <div class="w-full overflow-hidden leading-none transform rotate-180">
+                <svg viewBox="0 0 100 10" preserveAspectRatio="none" class="w-full h-auto block" style="height: 40px;">
+                    <path d="M0 10 H 5 V 8 H 10 V 10 H 15 V 7 H 20 V 10 H 22 V 5 H 28 V 10 H 35 V 8 H 40 V 6 H 45 V 10 H 55 V 8 H 60 V 10 H 65 V 5 H 70 V 10 H 78 V 7 H 85 V 10 H 90 V 8 H 95 V 10 H 100 V 0 H 0 Z" fill="#1f2937"></path>
+                </svg>
             </div>
         </section>
         
         <!-- Download Section -->
         <section id="download" class="py-20 px-4 bg-gray-100 text-center">
             <div class="container mx-auto">
-                <h2 class="text-4xl md:text-6xl font-bold mb-8 text-gray-800">Download?</h2>
-                <p class="mceasy max-w-2xl mx-auto mb-10 text-lg">
+                <h2 class="text-4xl md:text-6xl font-bold mb-8 text-gray-800 mceasy">Download?</h2>
+                <p class="mceasy max-w-2xl mx-auto mb-10 text-lg text-gray-600">
                     Coming soon...
                 </p>
-                <!--<a href="soon..." class="buttonGET inline-block mx-auto">DOWNLOAD</a>
-            </div>-->
+            </div>
         </section>
     </main>
 
     <!-- Footer -->
     <footer class="bg-gray-800 text-white text-center py-10 px-4 text-xs">
         <div class="container mx-auto">
-            <center><img src="content/MCPSVBLogo_small.png"></center>
-            <br>
-            <br>
-            <p class="mceasy mb-4 max-w-xl mx-auto">
+            <img src="content/MCPSVBLogo_small.png" alt="Small Logo" class="mx-auto mb-6">
+            <p class="mceasy mb-4 max-w-xl mx-auto text-gray-400">
                 MINECRAFT: PLAYSTATION VITA EDITION BEDROCKED (OR MCPSVB) IS A FAN-MADE MODIFICATION AND DOES NOT CLAIM ANY RIGHTS TO ASSETS INVOLVED. © 4J STUDIOS ORIGINAL WORKS.
             </p>
-            <p class="mceasy mb-6 max-w-xl mx-auto">
+            <p class="mceasy mb-6 max-w-xl mx-auto text-gray-400">
                 "VITA" AND "PLAYSTATION" ARE REGISTERED TRADEMARKS OF SONY INTERACTIVE ENTERTAINMENT. "MINECRAFT" IS A REGISTERED TRADEMARK OF MICROSOFT CORPORATION.
             </p>
-            <a href="https://github.com/yaragirodev"><p class="mceasy text-green-400">yaragirodev</p></a>
+            <a href="https://github.com/yaragirodev" target="_blank" rel="noopener noreferrer" class="mceasy text-green-400 hover:underline">yaragirodev</a>
         </div>
     </footer>
 
     <script>
-        document.getElementById('play-button').addEventListener('click', function() {
-        });
-        document.getElementById('video-container').addEventListener('click', function() {
-            this.innerHTML = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>';
-        });
-        
-        // Анимация слежения Vita за курсором
-        const vitaImage = document.getElementById('vita-image');
-        const vitaContainer = document.getElementById('vita-container');
-        const customCursor = document.getElementById('custom-cursor');
-        
-        // Функция для обновления позиции курсора
-        function updateCursorPosition(e) {
-            customCursor.style.left = e.clientX + 'px';
-            customCursor.style.top = e.clientY + 'px';
-        }
-        
-        // Функция для обновления поворота Vita
-        function updateVitaRotation(e) {
-            const rect = vitaContainer.getBoundingClientRect();
-            const centerX = rect.left + rect.width / 2;
-            const centerY = rect.top + rect.height / 2;
+        // Wait for the DOM to be fully loaded before running scripts
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoContainer = document.getElementById('video-container');
+            const vitaImage = document.getElementById('vita-image');
+            const vitaContainer = document.getElementById('vita-container');
+            const customCursor = document.getElementById('custom-cursor');
+
+            // --- Video Player Logic ---
+            const playVideo = () => {
+                // Replace the container with the YouTube iframe to play the video.
+                // The video is a classic...
+                videoContainer.innerHTML = '<iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ?autoplay=1" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen loading="lazy"></iframe>';
+            };
+            videoContainer.addEventListener('click', playVideo);
+
+            // --- Exit if on a mobile device (no custom cursor/animations needed) ---
+            if (window.matchMedia("(max-width: 768px)").matches) {
+                return;
+            }
+
+            // --- Desktop-Only Animations & Custom Cursor ---
+
+            // Function to update the custom cursor's position
+            const updateCursorPosition = (e) => {
+                customCursor.style.left = e.clientX + 'px';
+                customCursor.style.top = e.clientY + 'px';
+            };
             
-            const mouseX = e.clientX;
-            const mouseY = e.clientY;
+            // Function to update the PS Vita's rotation based on cursor position
+            const updateVitaRotation = (e) => {
+                const rect = vitaContainer.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                const mouseX = e.clientX;
+                const mouseY = e.clientY;
+
+                const deltaX = mouseX - centerX;
+                const deltaY = mouseY - centerY;
+                
+                // Set maximum rotation angles for a subtle effect
+                const maxRotateY = 10; // degrees
+                const maxRotateX = 5;  // degrees
+                
+                // Calculate rotation based on distance from the center
+                const rotateY = (deltaX / (rect.width / 2)) * maxRotateY;
+                const rotateX = -(deltaY / (rect.height / 2)) * maxRotateX;
+
+                // Apply the 3D rotation to the Vita image
+                vitaImage.style.transform = `rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
+                // Apply a subtle parallax effect to the container
+                vitaContainer.style.transform = `translate(${rotateY * 0.3}px, ${-rotateX * 0.5}px)`;
+            };
             
-            // Вычисляем разницу между позицией мыши и центром изображения
-            const deltaX = mouseX - centerX;
-            const deltaY = mouseY - centerY;
-            
-            // Ограничиваем максимальное смещение для более тонкого эффекта
-            const maxDistance = 200;
-            const distance = Math.min(Math.sqrt(deltaX * deltaX + deltaY * deltaY), maxDistance);
-            
-            // Нормализуем значения и применяем ограничения
-            const rotateY = (deltaX / maxDistance) * 10; // Максимум 10 градусов
-            const rotateX = -(deltaY / maxDistance) * 5; // Максимум 5 градусов
-            
-            // Применяем трансформацию с плавной анимацией
-            vitaImage.style.transform = `rotate(-12deg) rotateY(${rotateY}deg) rotateX(${rotateX}deg)`;
-            
-            // Легкое смещение контейнера для параллакс-эффекта
-            vitaContainer.style.transform = `translate(${rotateY * 0.3}px, ${-rotateX * 0.5}px)`;
-        }
-        
-        // Обработчики событий для десктопных устройств
-        if (window.matchMedia("(min-width: 769px)").matches) {
-            document.addEventListener('mousemove', function(e) {
+            // --- Unified Event Listeners for Performance ---
+
+            // A single mousemove listener to handle all cursor-related effects
+            document.addEventListener('mousemove', (e) => {
                 updateCursorPosition(e);
                 updateVitaRotation(e);
-            });
-            
-            // Эффект нажатия на курсор
-            document.addEventListener('mousedown', function() {
-                customCursor.classList.add('click');
-            });
-            
-            document.addEventListener('mouseup', function() {
-                customCursor.classList.remove('click');
-            });
-            
-            // Скрываем курсор когда мышь покидает страницу
-            document.addEventListener('mouseleave', function() {
-                customCursor.style.opacity = '0';
-            });
-            
-            document.addEventListener('mouseenter', function() {
-                customCursor.style.opacity = '1';
-            });
-            
-            // Кликабельные элементы
-const clickableElements = document.querySelectorAll('a, button, .play-button');
-clickableElements.forEach(el => {
-    el.addEventListener('mouseenter', function() {
-        customCursor.style.transform = 'translate(-50%, -50%) scale(1.2)';
-        customCursor.style.backgroundImage = 'url("content/link.png")';
-    });
-    el.addEventListener('mouseleave', function() {
-        customCursor.style.transform = 'translate(-50%, -50%)';
-        customCursor.style.backgroundImage = 'url("content/cursor.png")';
-    });
-});
 
-// Текстовые элементы
-const textualElements = document.querySelectorAll('p, h1, h2');
-textualElements.forEach(el => {
-    el.addEventListener('mouseenter', function() {
-        customCursor.style.transform = 'translate(-50%, -50%) scale(1.1)';
-        customCursor.style.backgroundImage = 'url("content/text.png")';
-    });
-    el.addEventListener('mouseleave', function() {
-        customCursor.style.transform = 'translate(-50%, -50%)';
-        customCursor.style.backgroundImage = 'url("content/cursor.png")';
-    });
-});
+                const target = e.target;
+                let cursorState = 'default';
 
-        }
+                // Determine cursor state based on the hovered element
+                if (target.closest('a, button, .play-button')) {
+                    cursorState = 'link';
+                } else if (target.closest('p, h1, h2, h3')) {
+                    cursorState = 'text';
+                }
+                
+                // Update cursor style only if the state has changed to prevent unnecessary style changes
+                if (customCursor.dataset.state !== cursorState) {
+                    customCursor.dataset.state = cursorState;
+                    switch (cursorState) {
+                        case 'link':
+                            customCursor.style.transform = 'translate(-50%, -50%) scale(1.3)';
+                            customCursor.style.backgroundImage = 'url("content/link.png")';
+                            break;
+                        case 'text':
+                            customCursor.style.transform = 'translate(-50%, -50%) scale(1.1)';
+                            customCursor.style.backgroundImage = 'url("content/text.png")';
+                            break;
+                        default:
+                            customCursor.style.transform = 'translate(-50%, -50%)';
+                            customCursor.style.backgroundImage = 'url("content/cursor.png")';
+                    }
+                }
+            });
+            
+            // Add/remove a 'click' class for a visual feedback effect
+            document.addEventListener('mousedown', () => customCursor.classList.add('click'));
+            document.addEventListener('mouseup', () => customCursor.classList.remove('click'));
+            
+            // Hide/show cursor when the mouse leaves/enters the page
+            document.addEventListener('mouseleave', () => customCursor.style.opacity = '0');
+            document.addEventListener('mouseenter', () => customCursor.style.opacity = '1');
+        });
     </script>
-
 </body>
-</html>
+        </html>
